@@ -69,7 +69,7 @@ const op = built?.operations[0] as Operation.InvokeHostFunction
 
 op.auth?.splice(0, 1, entry)
 
-console.log(built?.toXDR());
+console.log('\n', built?.toXDR(), '\n');
 
 const sim = await rpc.simulateTransaction(built!)
 
@@ -82,6 +82,8 @@ if (SorobanRpc.Api.isSimulationRestore(sim))
 const txn = SorobanRpc.assembleTransaction(new Transaction(built!.toXDR(), networkPassphrase), sim).build()
 
 txn.sign(keypair)
+
+console.log('\n', txn.toXDR(), '\n');
 
 const res = await rpc.sendTransaction(txn)
 
