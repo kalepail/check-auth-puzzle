@@ -1,24 +1,24 @@
-import { SorobanRpc, Networks, Keypair, xdr, hash, Address, Operation, TransactionBuilder, Transaction } from '@stellar/stellar-sdk'
+import { SorobanRpc, Networks, Keypair, xdr, hash, Address, Operation, Transaction } from '@stellar/stellar-sdk'
 import { basicNodeSigner, DEFAULT_TIMEOUT } from '@stellar/stellar-sdk/contract';
 import { Client, networks } from 'puzzle-sdk'
 
 // Issuer
 // PUZZLE
-// SCEVQ4LE2HI7VGJKVJPEZVUALIDIGXWVGVWG5RC22KQRFZIMHYZX7QR2
-// GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7
-// CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2
+// CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z
+// GCUY5ECTBWZ5JGLXPPKSK4Y34RIMN2AEO4UNGQRRBF6AVVDSXSWLJLEN
+// SB37H2EPZ4IK3JVLZPMMO3MYTFQ4UUXFZTS7VEHUOQJ4WVHCVMFOYRHB
 
-const keypair = Keypair.fromSecret('SDNS3C4YQ5BDBXBZ56MEB754VLY352VSWGJZNW3W5CIUXEI3MEBTWKFT'); // GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ
+const keypair = Keypair.fromSecret('SBMM4Q4A6AW2RFF7N62G62CT2ZYU4GZXK3EPPJFDJTWBRUDTFDT77VED'); // GCQXHDLSMF6YR53VNE6JXEBT3C53THISP2U2YDYESQG5BEBVBRNU4HZH
 const publicKey = keypair.publicKey()
 
-// console.log([
-//     ...keypair.rawSecretKey(),
-//     ...keypair.rawPublicKey(),
-// ])
+console.log([
+    ...keypair.rawSecretKey(),
+    ...keypair.rawPublicKey(),
+])
 
-// const nativeSAC = 'CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC'
-const puzzleSAC = 'CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2'
-const contractId = 'CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU'
+const puzzleSAC = 'CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z'
+const puzzleId = 'CCPYY3EQZQ6SQE2XRHCU5VVH4DCR3ZCNRHIS5ITCSMBK2WOPMN56LEAV'
+const solverId = 'CD3QSVJ2FLC4XMRHPVS3NM2TFFKXNTGINP3A55W5P5FKZR5YHS6PABT2'
 
 const rpcUrl = 'https://soroban-testnet.stellar.org'
 const rpc = new SorobanRpc.Server(rpcUrl)
@@ -29,12 +29,13 @@ const contract = new Client({
     ...networks.testnet,
     ...basicNodeSigner(keypair, networkPassphrase),
     networkPassphrase,
-    contractId,
+    contractId: solverId,
     publicKey,
     rpcUrl,
 })
 
 const { built, simulationData } = await contract.call({
+    puzzle: puzzleId,
     sac: puzzleSAC
 })
 
@@ -59,10 +60,6 @@ credentials.signature(xdr.ScVal.scvMap([
         val: Address.fromString(publicKey).toScVal()
     }),
     new xdr.ScMapEntry({
-        key: xdr.ScVal.scvSymbol('public_key'),
-        val: xdr.ScVal.scvBytes(keypair.rawPublicKey()),
-    }),
-    new xdr.ScMapEntry({
         key: xdr.ScVal.scvSymbol('signature'),
         val: xdr.ScVal.scvBytes(signature),
     }),
@@ -76,10 +73,11 @@ console.log(built?.toXDR());
 
 const sim = await rpc.simulateTransaction(built!)
 
-if (
-    SorobanRpc.Api.isSimulationError(sim)
-    || SorobanRpc.Api.isSimulationRestore(sim)
-) throw sim
+if (SorobanRpc.Api.isSimulationError(sim)) 
+    throw sim.error
+
+if (SorobanRpc.Api.isSimulationRestore(sim))
+    throw 'Restore required'
 
 const txn = SorobanRpc.assembleTransaction(new Transaction(built!.toXDR(), networkPassphrase), sim).build()
 

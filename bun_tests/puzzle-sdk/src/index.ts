@@ -33,26 +33,19 @@ if (typeof window !== 'undefined') {
 export const networks = {
   testnet: {
     networkPassphrase: "Test SDF Network ; September 2015",
-    contractId: "CDLOZN6IK55ANUCMERGWIDBITVKSJE452B6VN37ZMRJGBGELSWXSUANG",
+    contractId: "CD3QSVJ2FLC4XMRHPVS3NM2TFFKXNTGINP3A55W5P5FKZR5YHS6PABT2",
   }
 } as const
 
-
-export interface Signature {
-  address: string;
-  public_key: Buffer;
-  signature: Buffer;
-}
-
 export const Errors = {
-  1: {message:"TooBadSoSad"}
+
 }
 
 export interface Client {
   /**
    * Construct and simulate a call transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
    */
-  call: ({sac}: {sac: string}, options?: {
+  call: ({puzzle, sac}: {puzzle: string, sac: string}, options?: {
     /**
      * The fee to pay for the transaction. Default: BASE_FEE
      */
@@ -73,10 +66,7 @@ export interface Client {
 export class Client extends ContractClient {
   constructor(public readonly options: ContractClientOptions) {
     super(
-      new ContractSpec([ "AAAAAAAAAAAAAAAEY2FsbAAAAAEAAAAAAAAAA3NhYwAAAAATAAAAAA==",
-        "AAAAAQAAAAAAAAAAAAAACVNpZ25hdHVyZQAAAAAAAAMAAAAAAAAAB2FkZHJlc3MAAAAAEwAAAAAAAAAKcHVibGljX2tleQAAAAAD7gAAACAAAAAAAAAACXNpZ25hdHVyZQAAAAAAA+4AAABA",
-        "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAAAQAAAAAAAAALVG9vQmFkU29TYWQAAAAAAQ==",
-        "AAAAAAAAAAAAAAAMX19jaGVja19hdXRoAAAAAwAAAAAAAAARc2lnbmF0dXJlX3BheWxvYWQAAAAAAAPuAAAAIAAAAAAAAAAJc2lnbmF0dXJlAAAAAAAH0AAAAAlTaWduYXR1cmUAAAAAAAAAAAAADWF1dGhfY29udGV4dHMAAAAAAAPqAAAH0AAAAAdDb250ZXh0AAAAAAEAAAPpAAAD7QAAAAAAAAAD" ]),
+      new ContractSpec([ "AAAAAAAAAAAAAAAEY2FsbAAAAAIAAAAAAAAABnB1enpsZQAAAAAAEwAAAAAAAAADc2FjAAAAABMAAAAA" ]),
       options
     )
   }

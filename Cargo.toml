@@ -4,11 +4,15 @@ members = [
   "contracts/*",
 ]
 
+[workspace.package]
+version = "0.0.0"
+
 [workspace.dependencies]
 soroban-sdk = "21.3.0"
 ed25519-dalek = { version = "1.0.1" }
 rand = { version = "0.7.3" }
 stellar-strkey = { version = "0.0.8" }
+puzzle = { path = "contracts/puzzle" }
 
 [profile.release]
 opt-level = "z"

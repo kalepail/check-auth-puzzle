@@ -1,6 +1,6 @@
 [package]
-name = "hello-world"
-version = "0.0.0"
+name = "solver"
+version.workspace = true
 edition = "2021"
 publish = false
 
@@ -10,9 +10,11 @@ doctest = false
 
 [dependencies]
 soroban-sdk = { workspace = true }
+puzzle = { workspace = true }
 
 [dev-dependencies]
 soroban-sdk = { workspace = true, features = ["testutils"] }
+puzzle = { workspace = true }
 ed25519-dalek = { workspace = true }
 rand = { workspace = true }
 stellar-strkey = { workspace = true }
