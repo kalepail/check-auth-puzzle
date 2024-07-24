@@ -25,8 +25,6 @@ fn test() {
     // let env = Env::default();
     let env = Env::from_ledger_snapshot_file("snapshot.json");
 
-    // let env = Env::new_with_config(EnvConfig { capture_snapshot_at_drop: false });
-
     // env.ledger().set_sequence_number(0);
 
     // let puzzle_id = env.register_contract(None, PuzzleContract);
@@ -129,7 +127,7 @@ fn test() {
     solver_client
         .set_auths(&[SorobanAuthorizationEntry {
             credentials: SorobanCredentials::Address(SorobanAddressCredentials {
-                address: puzzle_id.clone().try_into().unwrap(), // solver_id.clone().try_into().unwrap(),
+                address: puzzle_id.clone().try_into().unwrap(),
                 nonce,
                 signature_expiration_ledger,
                 signature: Signature {
