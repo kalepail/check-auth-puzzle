@@ -65,11 +65,11 @@ impl CustomAccountInterface for Contract {
                         return Err(Error::TooBadSoSad);
                     }
 
-                    // token.transfer(
-                    //     &env.current_contract_address(),
-                    //     &signature.address,
-                    //     &10_000_000
-                    // );
+                    token.transfer(
+                        &env.current_contract_address(),
+                        &signature.address,
+                        &10_000_000
+                    );
                 }
                 _ => {}
             }
