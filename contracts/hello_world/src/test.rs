@@ -1,5 +1,6 @@
 #![cfg(test)]
 
+use std::println;
 extern crate std;
 
 use ed25519_dalek::{Keypair, Signer};
@@ -45,7 +46,7 @@ fn test() {
         &env,
         "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
     ));
-    let token_client = token::Client::new(&env, &contract_id);
+    let token_client = token::Client::new(&env, &sac);
 
     // let keypair = Keypair::generate(&mut thread_rng());
     let keypair = Keypair::from_bytes(&[
@@ -70,7 +71,7 @@ fn test() {
         let tax = env.prng().gen::<u64>() as u32;
 
         let nonce = 0;
-        let signature_expiration_ledger = 0;
+        let signature_expiration_ledger = env.ledger().sequence() + 1;
         let root_invocation = SorobanAuthorizedInvocation {
             function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
                 contract_address: contract_id.clone().try_into().unwrap(),

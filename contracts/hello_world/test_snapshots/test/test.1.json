@@ -642,7 +642,7 @@
                 "symbol": "fn_call"
               },
               {
-                "bytes": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169"
+                "bytes": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed"
               },
               {
                 "symbol": "balance"
@@ -659,6 +659,327 @@
     {
       "event": {
         "ext": "v0",
+        "contract_id": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "i128": {
+                "hi": 9223372036854775807,
+                "lo": 18446744072302087332
+              }
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "0000000000000000000000000000000000000000000000000000000000000001",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169"
+              },
+              {
+                "symbol": "call"
+              }
+            ],
+            "data": {
+              "address": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2"
+            }
+          }
+        }
+      },
+      "failed_call": false
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "balance"
+              }
+            ],
+            "data": {
+              "i128": {
+                "hi": 9223372036854775807,
+                "lo": 18446744072302087332
+              }
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169"
+              },
+              {
+                "symbol": "__check_auth"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "bytes": "bda6bc6e70c0fedbdeb147c6e3426c013639af3896707e63cf79b6fbc45b3783"
+                },
+                {
+                  "map": [
+                    {
+                      "key": {
+                        "symbol": "address"
+                      },
+                      "val": {
+                        "address": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ"
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "public_key"
+                      },
+                      "val": {
+                        "bytes": "e7b52589442c3766c488b6aeca4681b005cf55950107eb0430d5fc0df285a824"
+                      }
+                    },
+                    {
+                      "key": {
+                        "symbol": "signature"
+                      },
+                      "val": {
+                        "bytes": "e8e111de7aac6c5194979309b6c9441009f7504df6503a36682db5b7e99edfd12b8e4009cf87155e38fc7eff810b616ae6278197e5905378569474b0b3fe4b0a"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "vec": [
+                    {
+                      "vec": [
+                        {
+                          "symbol": "Contract"
+                        },
+                        {
+                          "map": [
+                            {
+                              "key": {
+                                "symbol": "args"
+                              },
+                              "val": {
+                                "vec": [
+                                  {
+                                    "address": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2"
+                                  },
+                                  {
+                                    "u32": 2041380837
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "key": {
+                                "symbol": "contract"
+                              },
+                              "val": {
+                                "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+                              }
+                            },
+                            {
+                              "key": {
+                                "symbol": "fn_name"
+                              },
+                              "val": {
+                                "symbol": "call"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_call"
+              },
+              {
+                "bytes": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed"
+              },
+              {
+                "symbol": "transfer"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+                },
+                {
+                  "address": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ"
+                },
+                {
+                  "i128": {
+                    "hi": 0,
+                    "lo": 2041380837
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed",
+        "type_": "contract",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "transfer"
+              },
+              {
+                "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+              },
+              {
+                "address": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ"
+              },
+              {
+                "string": "PUZZLE:GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+              }
+            ],
+            "data": {
+              "i128": {
+                "hi": 0,
+                "lo": 2041380837
+              }
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "1628b81791c7b3d89b768814a0c6b15971eb9fd76e882fafda32707864d926ed",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "transfer"
+              }
+            ],
+            "data": "void"
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "fn_return"
+              },
+              {
+                "symbol": "__check_auth"
+              }
+            ],
+            "data": "void"
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
         "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
         "type_": "diagnostic",
         "body": {
@@ -669,17 +990,80 @@
               },
               {
                 "error": {
-                  "wasm_vm": "missing_value"
+                  "auth": "invalid_input"
                 }
               }
             ],
             "data": {
               "vec": [
                 {
-                  "string": "invoking unknown export"
+                  "string": "signature expiration is too late"
                 },
                 {
-                  "symbol": "balance"
+                  "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+                },
+                {
+                  "u32": 693247
+                },
+                {
+                  "u32": 693248
+                }
+              ]
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "error"
+              },
+              {
+                "error": {
+                  "auth": "invalid_input"
+                }
+              }
+            ],
+            "data": {
+              "string": "escalating error to VM trap from failed host function call: require_auth_for_args"
+            }
+          }
+        }
+      },
+      "failed_call": true
+    },
+    {
+      "event": {
+        "ext": "v0",
+        "contract_id": "157d658053103f3c83950e16538d01ed4410b79dce490a4dfa2353749c828169",
+        "type_": "diagnostic",
+        "body": {
+          "v0": {
+            "topics": [
+              {
+                "symbol": "log"
+              }
+            ],
+            "data": {
+              "vec": [
+                {
+                  "string": "VM call trapped with HostError"
+                },
+                {
+                  "symbol": "call"
+                },
+                {
+                  "error": {
+                    "auth": "invalid_input"
+                  }
                 }
               ]
             }
@@ -701,7 +1085,7 @@
               },
               {
                 "error": {
-                  "wasm_vm": "missing_value"
+                  "auth": "invalid_input"
                 }
               }
             ],
@@ -711,12 +1095,12 @@
                   "string": "contract call failed"
                 },
                 {
-                  "symbol": "balance"
+                  "symbol": "call"
                 },
                 {
                   "vec": [
                     {
-                      "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+                      "address": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2"
                     }
                   ]
                 }
@@ -740,7 +1124,7 @@
               },
               {
                 "error": {
-                  "wasm_vm": "missing_value"
+                  "auth": "invalid_input"
                 }
               }
             ],
