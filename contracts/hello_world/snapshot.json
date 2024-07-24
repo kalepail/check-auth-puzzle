@@ -1,0 +1,572 @@
+{
+  "protocol_version": 21,
+  "sequence_number": 693503,
+  "timestamp": 0,
+  "network_id": "cee0302d59844d32bdca915c8203dd44b33fbb7edc19051ea37abedf28ecd472",
+  "base_reserve": 1,
+  "min_persistent_entry_ttl": 0,
+  "min_temp_entry_ttl": 0,
+  "max_entry_ttl": 0,
+  "ledger_entries": [
+    [
+      {
+        "account": {
+          "account_id": "GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692946,
+          "data": {
+            "account": {
+              "account_id": "GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7",
+              "balance": 99995253308,
+              "seq_num": 2974853262999554,
+              "num_sub_entries": 0,
+              "inflation_dest": null,
+              "flags": 0,
+              "home_domain": "",
+              "thresholds": "01000000",
+              "signers": [],
+              "ext": {
+                "v1": {
+                  "liabilities": {
+                    "buying": 0,
+                    "selling": 0
+                  },
+                  "ext": {
+                    "v2": {
+                      "num_sponsored": 0,
+                      "num_sponsoring": 0,
+                      "signer_sponsoring_i_ds": [],
+                      "ext": {
+                        "v3": {
+                          "ext": "v0",
+                          "seq_ledger": 692946,
+                          "seq_time": 1721783899
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "account": {
+          "account_id": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 693074,
+          "data": {
+            "account": {
+              "account_id": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ",
+              "balance": 99999483954,
+              "seq_num": 2965442989654022,
+              "num_sub_entries": 1,
+              "inflation_dest": null,
+              "flags": 0,
+              "home_domain": "",
+              "thresholds": "01000000",
+              "signers": [],
+              "ext": {
+                "v1": {
+                  "liabilities": {
+                    "buying": 0,
+                    "selling": 0
+                  },
+                  "ext": {
+                    "v2": {
+                      "num_sponsored": 0,
+                      "num_sponsoring": 0,
+                      "signer_sponsoring_i_ds": [],
+                      "ext": {
+                        "v3": {
+                          "ext": "v0",
+                          "seq_ledger": 693074,
+                          "seq_time": 1721784572
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "trustline": {
+          "account_id": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ",
+          "asset": {
+            "credit_alphanum12": {
+              "asset_code": "PUZZLE",
+              "issuer": "GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+            }
+          }
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 693074,
+          "data": {
+            "trustline": {
+              "account_id": "GDT3KJMJIQWDOZWERC3K5SSGQGYALT2VSUAQP2YEGDK7YDPSQWUCIHYZ",
+              "asset": {
+                "credit_alphanum12": {
+                  "asset_code": "PUZZLE",
+                  "issuer": "GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+                }
+              },
+              "balance": 576642739,
+              "limit": 9223372036854775807,
+              "flags": 1,
+              "ext": "v0"
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+          "key": "ledger_key_contract_instance",
+          "durability": "persistent"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692938,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+              "key": "ledger_key_contract_instance",
+              "durability": "persistent",
+              "val": {
+                "contract_instance": {
+                  "executable": {
+                    "wasm": "cb4bc81d096bee054385148205c6193c28f78c83477c2de3495533338c164b1b"
+                  },
+                  "storage": null
+                }
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+          "key": {
+            "ledger_key_nonce": {
+              "nonce": 3387644795773823322
+            }
+          },
+          "durability": "temporary"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692968,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+              "key": {
+                "ledger_key_nonce": {
+                  "nonce": 3387644795773823322
+                }
+              },
+              "durability": "temporary",
+              "val": "void"
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+          "key": {
+            "ledger_key_nonce": {
+              "nonce": 5670734544643946199
+            }
+          },
+          "durability": "temporary"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 693074,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+              "key": {
+                "ledger_key_nonce": {
+                  "nonce": 5670734544643946199
+                }
+              },
+              "durability": "temporary",
+              "val": "void"
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+          "key": {
+            "ledger_key_nonce": {
+              "nonce": 8566170286919228877
+            }
+          },
+          "durability": "temporary"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692955,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU",
+              "key": {
+                "ledger_key_nonce": {
+                  "nonce": 8566170286919228877
+                }
+              },
+              "durability": "temporary",
+              "val": "void"
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+          "key": {
+            "vec": [
+              {
+                "symbol": "Balance"
+              },
+              {
+                "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+              }
+            ]
+          },
+          "durability": "persistent"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 693074,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+              "key": {
+                "vec": [
+                  {
+                    "symbol": "Balance"
+                  },
+                  {
+                    "address": "CAKX2ZMAKMID6PEDSUHBMU4NAHWUIEFXTXHESCSN7IRVG5E4QKAWSGLU"
+                  }
+                ]
+              },
+              "durability": "persistent",
+              "val": {
+                "map": [
+                  {
+                    "key": {
+                      "symbol": "amount"
+                    },
+                    "val": {
+                      "i128": {
+                        "hi": 9223372036854775807,
+                        "lo": 18446744072302087332
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "authorized"
+                    },
+                    "val": {
+                      "bool": true
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "clawback"
+                    },
+                    "val": {
+                      "bool": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_code": {
+          "hash": "cb4bc81d096bee054385148205c6193c28f78c83477c2de3495533338c164b1b"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692937,
+          "data": {
+            "contract_code": {
+              "ext": {
+                "v1": {
+                  "ext": "v0",
+                  "cost_inputs": {
+                    "ext": "v0",
+                    "n_instructions": 1182,
+                    "n_functions": 17,
+                    "n_globals": 3,
+                    "n_table_entries": 3,
+                    "n_types": 16,
+                    "n_data_segments": 1,
+                    "n_elem_segments": 1,
+                    "n_imports": 19,
+                    "n_exports": 6,
+                    "n_data_segment_bytes": 276
+                  }
+                }
+              },
+              "hash": "cb4bc81d096bee054385148205c6193c28f78c83477c2de3495533338c164b1b",
+              "code": "0061736d01000000015d1060037f7f7f017f6000017e60037e7e7e017e60017e017e60027e7e017e60047e7e7e7e017e60017f0060027f7f017f60027f7f017e60037f7f7f0060017f017e60027f7e0060057e7f7f7f7f0060027f7f0060037e7f7f017e6000000273130178013700010164015f00020169013800030169013700030170015f00030170013100040161015f00040162013800030163013000020176013300030176013100040162015f0003016201660002016201310005017801300004016d016100050176016700040162016d000201620133000403121106070308090a020b0c0d0b0e070f0f0f0f0405017001030305030100110619037f01418080c0000b7f00419482c0000b7f0041a082c0000b073f06066d656d6f727902000463616c6c00150c5f5f636865636b5f617574680019015f00230a5f5f646174615f656e6403010b5f5f686561705f6261736503020908010041010b0213140add151102000b1e00200128021441ac81c08000410f200128021828020c118080808000000bfa0405017f017e017f017e037f23808080800041c0006b22012480808080000240200042ff018342cd00520d00200141186a4200370300200141106a4200370300200141086a4200370300200142003703002001108080808000370330024002402000428ed4e8d999b69e01200141306a41011096808080001081808080002202a741ff0171220341c500460d0002402003410b470d002002423f872104200242088721020c020b41f080c08000200141306a419c81c08000109780808000000b20021082808080002104200210838080800021020b2001200242388620024280fe0383422886842002428080fc0783421886200242808080f80f834208868484200242088842808080f80f832002421888428080fc07838420024228884280fe038320024238888484843703382001200442388620044280fe0383422886842004428080fc0783421886200442808080f80f834208868484200442088842808080f80f832004421888428080fc07838420044228884280fe03832004423888848484370330410021030240034020034110460d01200120036a22052d000021062005200141306a20036a22072d00003a0000200720063a0000200341016a21030c000b0b20011098808080001084808080001a4200427f108580808000210410808080800021022001200442208642048437032820012000370320410021030340024020034110470d00410021030240034020034110460d01200141306a20036a200141206a20036a290300370300200341086a21030c000b0b2002200141306a41021096808080001086808080001a200141c0006a24808080800042020f0b200141306a20036a4202370300200341086a21030c000b0b00000b1a002000ad4220864204842001ad4220864204841090808080000b090010a280808000000b18002000ad422086420484428480808080041092808080000bbf0d03027f097e027f2380808080004190026b2203248080808000200341b0016a2000109a80808000024020032802b0010d0020032903b8012100410021040240034020044118460d01200341e0016a20046a4202370300200441086a21040c000b0b200142ff018342cc00520d00200141d880c080004103200341e0016a4103109b8080800020032903e001220542ff018342cd00520d00200341a0016a20032903e801109a8080800020032802a0010d0020032903f001220142ff018342c800520d0020032903a801210620011087808080004280808080708342808080808008520d00200242ff018342cb00520d002006200020011088808080001a200341e0016aad4220864204842107200210898080800042208821084202210942002101034002400240024002400240024002400240200120085a0d00420221000240024020022001422086420484108a80808000220a42ff018342cb00520d00200a108980808000210b20034100360288022003200a370380022003200b4220883e028c0220034190016a20034180026a109c80808000200329039001a70d0020034180016a200329039801109d80808000200329038001a70d00024002400240200329038801419c80c080004102109e80808000422088a70e020001030b200328028802200328028c02109f8080800041014d0d010c020b200328028802200328028c02109f8080800041014b0d01200341f0006a20034180026a109c808080002003290370a70d012003290378210a410021040240034020044110460d01200341c0016a20046a4202370300200441086a21040c000b0b200a42ff018342cc00520d01200a41f881c080004102200341c0016a4102109b8080800020032903c001220a42ff018342cb00520d01200a108980808000210b200341003602e8012003200a3703e0012003200b4220883e02ec01200341e0006a200341e0016a109c808080002003290360a70d01200341d0006a2003290368109d808080002003290350a70d012003290358418c82c080004101109e8080800042ffffffff0f560d0120032802e80120032802ec01109f8080800041014b0d01200341c0006a200341e0016a109c808080002003290340a70d01200341306a2003290348109a808080002003290330a70d012003290338210b200341206a20032903c801109a8080800020032802200d01420121000c020b200341106a20034180026a109c808080002003290310a70d002003290318210a410021040240034020044118460d01200341e0016a20046a4202370300200441086a21040c000b0b200a42ff018342cc00520d00200a41d081c080004103200341e0016a4103109b8080800020032903e001220a42ff018342cb00520d0020032903e801220b42ff018342cd00520d00200320032903f001109d8080800020032802000d00420021000c010b0b200142ffffffff0f510d0620004202510d0520004200520d07200a10898080800042ffffffff0f580d04200a4204108a80808000220c42ff018342cd00520d03200a10898080800042ffffffff1f580d04200a428480808010108a80808000220d42ff01834204520d022005108b808080002200108780808000220a42808080808004540d062000200a428080808070834284808080807c7c200010878080800042808080807083420484108c808080002100200341e0016a41186a22044200370300200341e0016a41106a220e4200370300200341e0016a41086a220f4200370300200342003703e00120064204200742848080808004108d808080001a200341c0016a41186a2004290300370300200341c0016a41106a200e290300370300200341c0016a41086a200f290300370300200320032903e0013703c0012000200341c0016a109880808000108e80808000500d0142838080801021090b20034190026a24808080800020090f0b200320053703c8012003200b3703c0012003200d4218884280feffffff1f83420b843703d0014100210402400340024020044118470d00410021040240034020044118460d01200341e0016a20046a200341c0016a20046a290300370300200441086a21040c000b0b200c428eeeea95beb6def300200341e0016a410310968080800010818080800042ff01834202520d020c080b200341e0016a20046a4202370300200441086a21040c000b0b41f080c08000200341e0016a419c81c08000109780808000000b41f080c08000200341e0016a41ac80c08000109780808000000b41f080c08000200341e0016a41ac80c08000109780808000000b10a080808000000b41f080c08000200341e0016a41ac80c08000109780808000000b10a180808000000b200142017c21010c000b0b00000b3f01017e420121020240200142ff018342c800520d002001108780808000428080808070834280808080800452ad21020b20002001370308200020023703000b3200024020022004460d0000000b20002001ad4220864204842003ad4220864204842002ad422086420484108f808080001a0b5302017f027e0240024020012802082202200128020c490d00420221030c010b20012903002002ad422086420484108a8080800021042001200241016a360208420021030b20002004370308200020033703000b2401017f2000200137030820002001a741ff01712202410e47200241ca004771ad3703000b1c0020002001ad4220864204842002ad4220864204841091808080000b1900024020012000490d00200120006b0f0b10a180808000000b090010a180808000000b090010a280808000000b040000000b02000b0b9e020100418080c0000b9402436f6e7472616374437265617465436f6e7472616374486f7374466e0000100008000000080010001400000001000000000000000100000002000000616464726573737075626c69635f6b65797369676e617475726500003c00100007000000430010000a0000004d0010000900000063616c6c65642060526573756c743a3a756e77726170282960206f6e20616e2060457272602076616c75650001000000000000000100000002000000436f6e76657273696f6e4572726f7261726773636f6e7472616374666e5f6e616d650000bb00100004000000bf00100008000000c70010000700000065786563757461626c6573616c740000e80010000a000000f2001000040000005761736d080110000400000000ff020e636f6e747261637473706563763000000000000000000000000463616c6c000000010000000000000003736163000000001300000000000000010000000000000000000000095369676e6174757265000000000000030000000000000007616464726573730000000013000000000000000a7075626c69635f6b65790000000003ee0000002000000000000000097369676e6174757265000000000003ee00000040000000040000000000000000000000054572726f7200000000000001000000000000000b546f6f426164536f536164000000000100000000000000000000000c5f5f636865636b5f617574680000000300000000000000117369676e61747572655f7061796c6f6164000000000003ee0000002000000000000000097369676e6174757265000000000007d0000000095369676e6174757265000000000000000000000d617574685f636f6e7465787473000000000003ea000007d000000007436f6e746578740000000001000003e9000003ed0000000000000003001e11636f6e7472616374656e766d6574617630000000000000001500000000006f0e636f6e74726163746d65746176300000000000000005727376657200000000000006312e37392e3000000000000000000008727373646b7665720000002f32312e332e30236565353136643132646137333463633965633266333033636539386264323437333163363936663800"
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+          "key": {
+            "vec": [
+              {
+                "symbol": "Balance"
+              },
+              {
+                "address": "CDLOZN6IK55ANUCMERGWIDBITVKSJE452B6VN37ZMRJGBGELSWXSUANG"
+              }
+            ]
+          },
+          "durability": "persistent"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692844,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+              "key": {
+                "vec": [
+                  {
+                    "symbol": "Balance"
+                  },
+                  {
+                    "address": "CDLOZN6IK55ANUCMERGWIDBITVKSJE452B6VN37ZMRJGBGELSWXSUANG"
+                  }
+                ]
+              },
+              "durability": "persistent",
+              "val": {
+                "map": [
+                  {
+                    "key": {
+                      "symbol": "amount"
+                    },
+                    "val": {
+                      "i128": {
+                        "hi": 9223372036854775807,
+                        "lo": 12916126333770836823
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "authorized"
+                    },
+                    "val": {
+                      "bool": true
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "clawback"
+                    },
+                    "val": {
+                      "bool": false
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ],
+    [
+      {
+        "contract_data": {
+          "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+          "key": "ledger_key_contract_instance",
+          "durability": "persistent"
+        }
+      },
+      [
+        {
+          "last_modified_ledger_seq": 692650,
+          "data": {
+            "contract_data": {
+              "ext": "v0",
+              "contract": "CALCROAXSHD3HWE3O2EBJIGGWFMXD24725XIQL5P3IZHA6DE3ETO3NU2",
+              "key": "ledger_key_contract_instance",
+              "durability": "persistent",
+              "val": {
+                "contract_instance": {
+                  "executable": "stellar_asset",
+                  "storage": [
+                    {
+                      "key": {
+                        "symbol": "METADATA"
+                      },
+                      "val": {
+                        "map": [
+                          {
+                            "key": {
+                              "symbol": "decimal"
+                            },
+                            "val": {
+                              "u32": 7
+                            }
+                          },
+                          {
+                            "key": {
+                              "symbol": "name"
+                            },
+                            "val": {
+                              "string": "PUZZLE:GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+                            }
+                          },
+                          {
+                            "key": {
+                              "symbol": "symbol"
+                            },
+                            "val": {
+                              "string": "PUZZLE"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": {
+                        "vec": [
+                          {
+                            "symbol": "Admin"
+                          }
+                        ]
+                      },
+                      "val": {
+                        "address": "GBT7SVY2S6KUQA4C2MKIN3XKGFKRHZUDEITEGCRQITUATD6ZVANT2LW7"
+                      }
+                    },
+                    {
+                      "key": {
+                        "vec": [
+                          {
+                            "symbol": "AssetInfo"
+                          }
+                        ]
+                      },
+                      "val": {
+                        "vec": [
+                          {
+                            "symbol": "AlphaNum12"
+                          },
+                          {
+                            "map": [
+                              {
+                                "key": {
+                                  "symbol": "asset_code"
+                                },
+                                "val": {
+                                  "string": "PUZZLE\\0\\0\\0\\0\\0\\0"
+                                }
+                              },
+                              {
+                                "key": {
+                                  "symbol": "issuer"
+                                },
+                                "val": {
+                                  "bytes": "67f9571a9795480382d31486eeea315513e6832226430a3044e8098fd9a81b3d"
+                                }
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "ext": "v0"
+        },
+        4294967295
+      ]
+    ]
+  ]
+}

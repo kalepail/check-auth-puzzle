@@ -26,10 +26,6 @@ fn test() {
     // env.ledger().set_sequence_number(0);
 
     let seed_contract_id = env.register_contract(None, Contract);
-    // let seed_contract_id = Address::from_string(&String::from_str(
-    //     &env,
-    //     "CADLLO22G7IXC4KYDRVSXCW5M2DEZYY5KT3AZT4AFQOBH527VTB76XIE",
-    // ));
     
     // let contract_id = env.register_contract(None, Contract);
     // let client = ContractClient::new(&env, &contract_id);
@@ -71,7 +67,7 @@ fn test() {
         let tax = env.prng().gen::<u64>() as u32;
 
         let nonce = 0;
-        let signature_expiration_ledger = env.ledger().sequence() + 1;
+        let signature_expiration_ledger = env.ledger().sequence();
         let root_invocation = SorobanAuthorizedInvocation {
             function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
                 contract_address: contract_id.clone().try_into().unwrap(),
