@@ -1,0 +1,21 @@
+[workspace]
+resolver = "2"
+members = [
+  "contracts/*",
+]
+
+[workspace.dependencies]
+soroban-sdk = "21.3.0"
+ed25519-dalek = { version = "1.0.1" }
+rand = { version = "0.7.3" }
+stellar-strkey = { version = "0.0.8" }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+debug-assertions = false
+panic = "abort"
+codegen-units = 1
+lto = true

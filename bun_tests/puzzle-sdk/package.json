@@ -1,0 +1,17 @@
+{
+  "version": "0.0.0",
+  "name": "puzzle-sdk",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "buffer": "6.0.3",
+    "@stellar/stellar-sdk": "12.2.0"
+  },
+  "devDependencies": {
+    "typescript": "5.5.4"
+  }
+}
