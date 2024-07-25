@@ -4,19 +4,14 @@ use std::println;
 extern crate std;
 
 use ed25519_dalek::{Keypair, Signer};
-use puzzle::{Contract as PuzzleContract, Signature};
+use puzzle::{Contract as PuzzleContract, Error, Signature};
 use rand::thread_rng;
 use soroban_sdk::{
-    testutils::{Address as _, Ledger},
-    token,
-    xdr::{
-        HashIdPreimage, HashIdPreimageSorobanAuthorization, InvokeContractArgs, Limits, ScAddress,
-        ScVal, SorobanAddressCredentials, SorobanAuthorizationEntry, SorobanAuthorizedFunction,
-        SorobanAuthorizedInvocation, SorobanCredentials, VecM, WriteXdr,
-    },
-    Address, Bytes, BytesN, Env, String,
+    auth::{Context, ContractContext}, symbol_short, testutils::{Address as _, Ledger, MockAuth, MockAuthInvoke}, token, vec, xdr::{
+        BytesM, HashIdPreimage, HashIdPreimageSorobanAuthorization, Int128Parts, InvokeContractArgs, Limits, ScAddress, ScBytes, ScVal, SorobanAddressCredentials, SorobanAuthorizationEntry, SorobanAuthorizedFunction, SorobanAuthorizedInvocation, SorobanCredentials, VecM, WriteXdr
+    }, Address, Bytes, BytesN, Env, IntoVal, String
 };
-use stellar_strkey::{ed25519, Strkey};
+use stellar_strkey::{ed25519, Contract, Strkey};
 
 use crate::{Contract as SolverContract, ContractClient as SolverContractClient};
 
@@ -27,17 +22,9 @@ fn test() {
 
     // env.ledger().set_sequence_number(0);
 
-    // let puzzle_id = env.register_contract(None, PuzzleContract);
-    let puzzle_id = Address::from_string(&String::from_str(
-        &env,
-        "CCPYY3EQZQ6SQE2XRHCU5VVH4DCR3ZCNRHIS5ITCSMBK2WOPMN56LEAV",
-    ));
+    let puzzle_id = env.register_contract(None, PuzzleContract);
 
     let solver_id = env.register_contract(None, SolverContract);
-    // let solver_id = Address::from_string(&String::from_str(
-    //     &env,
-    //     "CD37S3GCDMYYYMMQFL4EG555OQLVR6ZSY5ZWABTMYH2Y7WRBZJCHVFST",
-    // ));
     let solver_client = SolverContractClient::new(&env, &solver_id);
 
     // let sac = env.register_stellar_asset_contract(Address::generate(&env));
@@ -45,16 +32,13 @@ fn test() {
         &env,
         "CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z",
     ));
+    let sac_client = token::StellarAssetClient::new(&env, &sac);
     let token_client = token::Client::new(&env, &sac);
 
-    // let sac_client = token::StellarAssetClient::new(&env, &sac);
-    // sac_client.mock_all_auths().mint(&contract_id, &i128::MAX);
-
-    // let keypair = Keypair::generate(&mut thread_rng());
-    let pubkey = Address::from_string(&String::from_str(
-        &env,
-        "GCQXHDLSMF6YR53VNE6JXEBT3C53THISP2U2YDYESQG5BEBVBRNU4HZH",
-    ));
+    // let pubkey = Address::from_string(&String::from_str(
+    //     &env,
+    //     "GCQXHDLSMF6YR53VNE6JXEBT3C53THISP2U2YDYESQG5BEBVBRNU4HZH",
+    // ));
     let keypair = Keypair::from_bytes(&[
         88, 206, 67, 128, 240, 45, 168, 148, 191, 111, 180, 111, 104, 83, 214, 113, 78,
         27, 55, 86, 200, 247, 164, 163, 76, 236, 24, 208, 115, 40, 231, 255, 161, 115, 141,
@@ -63,34 +47,55 @@ fn test() {
       ])
     .unwrap();
 
-    println!("{}", token_client.balance(&puzzle_id));
-    println!("{}", token_client.balance(&pubkey));
+    let address = Strkey::PublicKeyEd25519(ed25519::PublicKey(keypair.public.to_bytes()));
+    let address = Bytes::from_slice(&env, address.to_string().as_bytes());
+    let address = Address::from_string_bytes(&address);
 
-    let mut tax = 0;
-
-    env.as_contract(&env.register_contract(None, SolverContract), || {
-        let mut seed = [0u8; 32];
-
-        let balance = token_client.balance(&puzzle_id);
-
-        seed[..16].swap_with_slice(&mut balance.to_be_bytes());
-
-        env.prng().seed(Bytes::from_array(&env, &seed));
-
-        tax = env.prng().gen::<u64>() as u32;
-    });
-
-    println!("\n{}\n", tax);
-
-    let nonce = 0;
     let signature_expiration_ledger = env.ledger().sequence();
-    let root_invocation = SorobanAuthorizedInvocation {
+
+    let invocation_1 = SorobanAuthorizedInvocation {
         function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
             contract_address: solver_id.clone().try_into().unwrap(),
             function_name: "call".try_into().unwrap(),
             args: std::vec![
                 ScVal::Address(ScAddress::try_from(sac.clone()).unwrap()),
-                ScVal::U32(tax)
+            ]
+            .try_into()
+            .unwrap(),
+        }),
+        sub_invocations: VecM::default()
+    };
+
+    let payload_1_preimage = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
+        network_id: env.ledger().network_id().to_array().into(),
+        nonce: 1111,
+        signature_expiration_ledger,
+        invocation: invocation_1.clone(),
+    });
+
+    let payload_1_xdr = payload_1_preimage
+        .to_xdr(Limits {
+            depth: u32::MAX,
+            len: usize::MAX,
+        })
+        .unwrap();
+
+    let mut payload_1 = Bytes::new(&env);
+
+    for byte in payload_1_xdr.iter() {
+        payload_1.push_back(*byte);
+    }
+
+    let payload_1_hash = env.crypto().sha256(&payload_1);
+    
+    let invocation_2 = SorobanAuthorizedInvocation {
+        function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
+            contract_address: sac.clone().try_into().unwrap(),
+            function_name: "transfer".try_into().unwrap(),
+            args: std::vec![
+                ScVal::Address(ScAddress::try_from(address.clone()).unwrap()),
+                ScVal::Address(ScAddress::try_from(puzzle_id.clone()).unwrap()),
+                ScVal::I128(Int128Parts{ hi: 0, lo: 10_000_000 })
             ]
             .try_into()
             .unwrap(),
@@ -98,52 +103,251 @@ fn test() {
         sub_invocations: VecM::default(),
     };
 
-    let payload = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
+    let payload_2_preimage = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
         network_id: env.ledger().network_id().to_array().into(),
-        nonce,
+        nonce: 2222,
         signature_expiration_ledger,
-        invocation: root_invocation.clone(),
+        invocation: invocation_2.clone(),
     });
 
-    let payload_xdr = payload
+    let payload_2_xdr = payload_2_preimage
         .to_xdr(Limits {
             depth: u32::MAX,
             len: usize::MAX,
         })
         .unwrap();
 
-    let mut payload = Bytes::new(&env);
+    let mut payload_2 = Bytes::new(&env);
 
-    for byte in payload_xdr.iter() {
-        payload.push_back(*byte);
+    for byte in payload_2_xdr.iter() {
+        payload_2.push_back(*byte);
     }
 
-    let payload = env.crypto().sha256(&payload);
-
-    let address = Strkey::PublicKeyEd25519(ed25519::PublicKey(keypair.public.to_bytes()));
-    let address = Bytes::from_slice(&env, address.to_string().as_bytes());
-    let address = Address::from_string_bytes(&address);
+    let payload_2_hash = env.crypto().sha256(&payload_2);
 
     solver_client
-        .set_auths(&[SorobanAuthorizationEntry {
-            credentials: SorobanCredentials::Address(SorobanAddressCredentials {
-                address: puzzle_id.clone().try_into().unwrap(),
-                nonce,
-                signature_expiration_ledger,
-                signature: Signature {
-                    address: address.clone(),
-                    signature: BytesN::from_array(
-                        &env,
-                        &keypair.sign(payload.to_array().as_slice()).to_bytes(),
-                    ),
-                }
-                .try_into()
-                .unwrap(),
-            }),
-            root_invocation,
-        }])
+        .set_auths(&[
+            SorobanAuthorizationEntry {
+                credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+                    address: puzzle_id.clone().try_into().unwrap(),
+                    nonce: 1111,
+                    signature_expiration_ledger,
+                    signature: Signature {
+                        address: address.clone(),
+                        signature: BytesN::from_array(
+                            &env,
+                            &keypair.sign(payload_1_hash.to_array().as_slice()).to_bytes(),
+                        ),
+                    }
+                    .try_into()
+                    .unwrap(),
+                }),
+                root_invocation: invocation_1,
+            },
+            SorobanAuthorizationEntry {
+                credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+                    address: address.clone().try_into().unwrap(),
+                    nonce: 2222,
+                    signature: keypair.sign(payload_2_hash.to_array().as_slice()).to_bytes().try_into().unwrap(),
+                    signature_expiration_ledger,
+                }),
+                root_invocation: invocation_2,
+            }
+        ])
         .call(&puzzle_id, &sac);
 
-    println!("{}", token_client.balance(&puzzle_id));
-    println!("{}", token_client.balance(&pubkey));
+    // env.auths().iter().for_each(|auth| {
+    //     println!("{:?}", auth);
+    // });
 }
+
+// SorobanAuthorizationEntry {
+//     credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+//         address: solver_id.clone().try_into().unwrap(),
+//         nonce: 1111,
+//         signature: ScVal::Void,
+//         signature_expiration_ledger,
+//     }),
+//     root_invocation: invocation_1,
+// },
+// SorobanAuthorizationEntry {
+//     credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+//         address: puzzle_id.clone().try_into().unwrap(),
+//         nonce: 2222,
+//         signature: ScVal::Void,
+//         signature_expiration_ledger,
+//     }),
+//     root_invocation: invocation_2,
+// },
+// SorobanAuthorizationEntry {
+//     credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+//         address: address.clone().try_into().unwrap(),
+//         nonce: 3333,
+//         signature: Signature {
+//             address: address.clone(),
+//             signature: BytesN::from_array(
+//                 &env,
+//                 &keypair.sign(payload_3_hash.to_array().as_slice()).to_bytes(),
+//             ),
+//         }
+//         .try_into()
+//         .unwrap(),
+//         signature_expiration_ledger,
+//     }),
+//     root_invocation: invocation_3,
+// }
+
+
+// SorobanAuthorizationEntry {
+//     credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+//         address: puzzle_id.clone().try_into().unwrap(),
+//         nonce,
+//         signature_expiration_ledger,
+//         signature: Signature {
+//             address: address.clone(),
+//             signature: BytesN::from_array(
+//                 &env,
+//                 &keypair.sign(payload.to_array().as_slice()).to_bytes(),
+//             ),
+//         }
+//         .try_into()
+//         .unwrap(),
+//     }),
+//     root_invocation: root_invocation.clone(),
+// },
+
+
+// SorobanAuthorizationEntry {
+//     credentials: SorobanCredentials::Address(SorobanAddressCredentials {
+//         address: sac.clone().try_into().unwrap(),
+//         nonce,
+//         signature_expiration_ledger,
+//         signature: keypair.sign(dayload.to_array().as_slice()).to_bytes()
+//         .try_into()
+//         .unwrap(),
+//     }),
+//     root_invocation: toot_invocation.clone(),
+// },
+
+
+// let invocation_2 = SorobanAuthorizedInvocation {
+//     function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
+//         contract_address: puzzle_id.clone().try_into().unwrap(),
+//         function_name: "__check_auth".try_into().unwrap(),
+//         args: std::vec![
+//             ScVal::Bytes(ScBytes(BytesM::try_from(payload_1_hash.to_array()).unwrap())),
+//         ]
+//         .try_into()
+//         .unwrap(),
+//     }),
+//     sub_invocations: VecM::default(),
+// };
+
+// let payload_2_preimage = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
+//     network_id: env.ledger().network_id().to_array().into(),
+//     nonce: 2222,
+//     signature_expiration_ledger,
+//     invocation: invocation_2.clone(),
+// });
+
+// let payload_2_xdr = payload_2_preimage
+//     .to_xdr(Limits {
+//         depth: u32::MAX,
+//         len: usize::MAX,
+//     })
+//     .unwrap();
+
+// let mut payload_2 = Bytes::new(&env);
+
+// for byte in payload_2_xdr.iter() {
+//     payload_2.push_back(*byte);
+// }
+
+// let payload_2_hash = env.crypto().sha256(&payload_2);
+
+// let invocation_3 = SorobanAuthorizedInvocation {
+//     function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
+//         contract_address: puzzle_id.clone().try_into().unwrap(),
+//         function_name: "__check_auth".try_into().unwrap(),
+//         args: std::vec![
+//             ScVal::Bytes(ScBytes(BytesM::try_from(payload_2_hash.to_array()).unwrap())),
+//         ]
+//         .try_into()
+//         .unwrap(),
+//     }),
+//     sub_invocations: VecM::default(),
+// };
+
+// let payload_3_preimage = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
+//     network_id: env.ledger().network_id().to_array().into(),
+//     nonce: 3333,
+//     signature_expiration_ledger,
+//     invocation: invocation_3.clone(),
+// });
+
+// let payload_3_xdr = payload_3_preimage
+//     .to_xdr(Limits {
+//         depth: u32::MAX,
+//         len: usize::MAX,
+//     })
+//     .unwrap();
+
+// let mut payload_3 = Bytes::new(&env);
+
+// for byte in payload_3_xdr.iter() {
+//     payload_3.push_back(*byte);
+// }
+
+// let payload_3_hash = env.crypto().sha256(&payload_3);
+////
+
+////
+// let root_invocation = 
+
+// let payload = HashIdPreimage::SorobanAuthorization(HashIdPreimageSorobanAuthorization {
+//     network_id: env.ledger().network_id().to_array().into(),
+//     nonce,
+//     signature_expiration_ledger,
+//     invocation: root_invocation.clone(),
+// });
+
+// let payload_xdr = payload
+//     .to_xdr(Limits {
+//         depth: u32::MAX,
+//         len: usize::MAX,
+//     })
+//     .unwrap();
+
+// let mut payload = Bytes::new(&env);
+
+// for byte in payload_xdr.iter() {
+//     payload.push_back(*byte);
+// }
+
+// let payload = env.crypto().sha256(&payload);
+
+// sac_client.mock_all_auths().mint(&address, &i128::MAX);
+////
+
+// println!("{:?}", token_client.balance(&address));
+
+// let res = env.try_invoke_contract_check_auth::<Error>(
+//     &puzzle_id, 
+//     &env.crypto().sha256(&payload).try_into().unwrap(),
+//     Signature {
+//         address: address.clone(),
+//         signature: BytesN::from_array(
+//             &env,
+//             &keypair.sign(env.crypto().sha256(&payload).to_array().as_slice()).to_bytes(),
+//         ),
+//     }.into_val(&env),
+//     &vec![&env, Context::Contract(ContractContext {
+//         contract: solver_id,
+//         fn_name: symbol_short!["call"],
+//         args: vec![&env, sac.to_val()],
+//     })]
+// );
+
+// println!("{:?}", res);
+
+// println!("{:?}", token_client.balance(&address));
