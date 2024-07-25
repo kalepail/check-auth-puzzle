@@ -7,13 +7,19 @@ use ed25519_dalek::{Keypair, Signer};
 use puzzle::{Contract as PuzzleContract, Error, Signature};
 use rand::thread_rng;
 use soroban_sdk::{
-    auth::{Context, ContractContext}, symbol_short, testutils::{Address as _, Ledger, MockAuth, MockAuthInvoke}, token, vec, xdr::{
-        BytesM, HashIdPreimage, HashIdPreimageSorobanAuthorization, Int128Parts, InvokeContractArgs, Limits, ScAddress, ScBytes, ScVal, SorobanAddressCredentials, SorobanAuthorizationEntry, SorobanAuthorizedFunction, SorobanAuthorizedInvocation, SorobanCredentials, VecM, WriteXdr
+    auth::{self, Context, ContractContext}, contracttype, symbol_short, testutils::{Address as _, Ledger, MockAuth, MockAuthInvoke}, token, vec, xdr::{
+        BytesM, HashIdPreimage, HashIdPreimageSorobanAuthorization, Int128Parts, InvokeContractArgs, Limits, ScAddress, ScBytes, ScVal, ScVec, SorobanAddressCredentials, SorobanAuthorizationEntry, SorobanAuthorizedFunction, SorobanAuthorizedInvocation, SorobanCredentials, VecM, WriteXdr
     }, Address, Bytes, BytesN, Env, IntoVal, String
 };
 use stellar_strkey::{ed25519, Contract, Strkey};
 
 use crate::{Contract as SolverContract, ContractClient as SolverContractClient};
+
+#[contracttype]
+struct AccountEd25519Signature {
+    public_key: BytesN<32>,
+    signature: BytesN<64>,
+}
 
 #[test]
 fn test() {
@@ -32,8 +38,8 @@ fn test() {
         &env,
         "CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z",
     ));
-    let sac_client = token::StellarAssetClient::new(&env, &sac);
-    let token_client = token::Client::new(&env, &sac);
+    // let sac_client = token::StellarAssetClient::new(&env, &sac);
+    // let token_client = token::Client::new(&env, &sac);
 
     // let pubkey = Address::from_string(&String::from_str(
     //     &env,
@@ -148,17 +154,25 @@ fn test() {
                 credentials: SorobanCredentials::Address(SorobanAddressCredentials {
                     address: address.clone().try_into().unwrap(),
                     nonce: 2222,
-                    signature: keypair.sign(payload_2_hash.to_array().as_slice()).to_bytes().try_into().unwrap(),
+                    signature: std::vec![
+                        AccountEd25519Signature {
+                            public_key: BytesN::from_array(&env, &keypair.public.to_bytes()),
+                            signature: BytesN::from_array(&env, &keypair.sign(&payload_2_hash.to_array()).to_bytes()),
+                        }
+                    ].try_into().unwrap(),
                     signature_expiration_ledger,
                 }),
                 root_invocation: invocation_2,
             }
         ])
-        .call(&puzzle_id, &sac);
+        // .mock_all_auths()
+        .call(
+            // &address, 
+            &puzzle_id, &sac);
 
-    // env.auths().iter().for_each(|auth| {
-    //     println!("{:?}", auth);
-    // });
+    env.auths().iter().for_each(|auth| {
+        println!("{:?}", auth);
+    });
 }
 
 // SorobanAuthorizationEntry {
