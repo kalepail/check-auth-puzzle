@@ -188,6 +188,7 @@ fn test() {
                 root_invocation: invocation_2,
             },
         ])
+        // .mock_all_auths() // TODO file an issue that this misses internal auth inside __check_auth
         .call(&puzzle_address);
 
     env.auths().iter().for_each(|auth| {

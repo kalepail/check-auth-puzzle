@@ -37,9 +37,12 @@ pub enum Error {
 impl Contract {
     pub fn setup(env: Env, sac_in_address: Address, sac_out_address: Address) {
         env.storage().temporary().set(&DataKey::In, &sac_in_address);
-        env.storage()
-            .temporary()
-            .set(&DataKey::Out, &sac_out_address);
+
+        if !env.storage().instance().has(&DataKey::Out) {
+            env.storage()
+                .instance()
+                .set(&DataKey::Out, &sac_out_address);
+        }
     }
 }
 
@@ -76,7 +79,7 @@ impl CustomAccountInterface for Contract {
         let sac_out_client = token::TokenClient::new(
             &env,
             &env.storage()
-                .temporary()
+                .instance()
                 .get::<DataKey, Address>(&DataKey::Out)
                 .unwrap_or_else(|| panic_with_error!(&env, Error::TooBadSoSad)),
         );
