@@ -4,22 +4,17 @@ use std::println;
 extern crate std;
 
 use ed25519_dalek::{Keypair, Signer};
-use puzzle::{Contract as PuzzleContract, Error, Signature};
-use rand::thread_rng;
+use puzzle::{Contract as PuzzleContract, ContractClient as PuzzleContractClient, Signature};
 use soroban_sdk::{
-    auth::{self, Context, ContractContext},
-    contracttype, symbol_short,
-    testutils::{Address as _, Ledger, MockAuth, MockAuthInvoke},
-    token, vec,
+    contracttype, token,
     xdr::{
-        BytesM, HashIdPreimage, HashIdPreimageSorobanAuthorization, Int128Parts,
-        InvokeContractArgs, Limits, ScAddress, ScBytes, ScVal, ScVec, SorobanAddressCredentials,
-        SorobanAuthorizationEntry, SorobanAuthorizedFunction, SorobanAuthorizedInvocation,
-        SorobanCredentials, VecM, WriteXdr,
+        HashIdPreimage, HashIdPreimageSorobanAuthorization, Int128Parts, InvokeContractArgs,
+        Limits, ScAddress, ScVal, SorobanAddressCredentials, SorobanAuthorizationEntry,
+        SorobanAuthorizedFunction, SorobanAuthorizedInvocation, SorobanCredentials, VecM, WriteXdr,
     },
-    Address, Bytes, BytesN, Env, IntoVal, String,
+    Address, Bytes, BytesN, Env, String,
 };
-use stellar_strkey::{ed25519, Contract, Strkey};
+use stellar_strkey::{ed25519, Strkey};
 
 use crate::{Contract as SolverContract, ContractClient as SolverContractClient};
 
@@ -36,18 +31,30 @@ fn test() {
 
     // env.ledger().set_sequence_number(0);
 
-    let puzzle_id = env.register_contract(None, PuzzleContract);
+    let puzzle_address = env.register_contract(None, PuzzleContract);
+    let puzzle_client = PuzzleContractClient::new(&env, &puzzle_address);
 
-    let solver_id = env.register_contract(None, SolverContract);
-    let solver_client = SolverContractClient::new(&env, &solver_id);
+    let solver_address = env.register_contract(None, SolverContract);
+    let solver_client = SolverContractClient::new(&env, &solver_address);
 
-    // let sac = env.register_stellar_asset_contract(Address::generate(&env));
-    let sac = Address::from_string(&String::from_str(
+    let sac_in_address = Address::from_string(&String::from_str(
+        &env,
+        "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC",
+    ));
+    // let sac_in_admin = token::StellarAssetClient::new(&env, &sac_in_address);
+    // let sac_in_client = token::Client::new(&env, &sac_in_address);
+
+    // let puzzle_sac_address = env.register_stellar_asset_contract(Address::generate(&env));
+    let sac_out_address = Address::from_string(&String::from_str(
         &env,
         "CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z",
     ));
-    // let sac_client = token::StellarAssetClient::new(&env, &sac);
-    // let token_client = token::Client::new(&env, &sac);
+    let sac_out_admin = token::StellarAssetClient::new(&env, &sac_out_address);
+    // let sac_out_client = token::Client::new(&env, &sac_out_address);
+
+    sac_out_admin
+        .mock_all_auths()
+        .mint(&puzzle_address, &10_000_000);
 
     // let pubkey = Address::from_string(&String::from_str(
     //     &env,
@@ -69,11 +76,9 @@ fn test() {
 
     let invocation_1 = SorobanAuthorizedInvocation {
         function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
-            contract_address: solver_id.clone().try_into().unwrap(),
+            contract_address: solver_address.clone().try_into().unwrap(),
             function_name: "call".try_into().unwrap(),
-            args: std::vec![ScVal::Address(ScAddress::try_from(sac.clone()).unwrap()),]
-                .try_into()
-                .unwrap(),
+            args: VecM::default(),
         }),
         sub_invocations: VecM::default(),
     };
@@ -103,11 +108,11 @@ fn test() {
 
     let invocation_2 = SorobanAuthorizedInvocation {
         function: SorobanAuthorizedFunction::ContractFn(InvokeContractArgs {
-            contract_address: sac.clone().try_into().unwrap(),
+            contract_address: sac_in_address.clone().try_into().unwrap(),
             function_name: "transfer".try_into().unwrap(),
             args: std::vec![
                 ScVal::Address(ScAddress::try_from(address.clone()).unwrap()),
-                ScVal::Address(ScAddress::try_from(solver_id.clone()).unwrap()),
+                ScVal::Address(ScAddress::try_from(puzzle_address.clone()).unwrap()),
                 ScVal::I128(Int128Parts {
                     hi: 0,
                     lo: 10_000_000
@@ -142,11 +147,13 @@ fn test() {
 
     let payload_2_hash = env.crypto().sha256(&payload_2);
 
+    puzzle_client.setup(&sac_in_address, &sac_out_address);
+
     solver_client
         .set_auths(&[
             SorobanAuthorizationEntry {
                 credentials: SorobanCredentials::Address(SorobanAddressCredentials {
-                    address: puzzle_id.clone().try_into().unwrap(),
+                    address: puzzle_address.clone().try_into().unwrap(),
                     nonce: 0,
                     signature_expiration_ledger,
                     signature: Signature {
@@ -181,9 +188,9 @@ fn test() {
                 root_invocation: invocation_2,
             },
         ])
-        .call(&puzzle_id, &sac);
+        .call(&puzzle_address);
 
-    // env.auths().iter().for_each(|auth| {
-    //     println!("{:?}", auth);
-    // });
+    env.auths().iter().for_each(|auth| {
+        println!("{:?}", auth);
+    });
 }

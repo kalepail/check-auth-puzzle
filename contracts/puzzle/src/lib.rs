@@ -4,7 +4,7 @@ use soroban_sdk::{
     auth::{Context, CustomAccountInterface},
     contract, contracterror, contractimpl, contracttype,
     crypto::Hash,
-    token,
+    panic_with_error, token,
     xdr::ToXdr,
     Address, BytesN, Env, TryIntoVal, Vec,
 };
@@ -19,11 +19,28 @@ pub struct Signature {
     pub signature: BytesN<64>,
 }
 
+#[contracttype]
+#[derive(Clone, Debug)]
+pub enum DataKey {
+    In,
+    Out,
+}
+
 #[contracterror]
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 #[repr(u32)]
 pub enum Error {
     TooBadSoSad = 1,
+}
+
+#[contractimpl]
+impl Contract {
+    pub fn setup(env: Env, sac_in_address: Address, sac_out_address: Address) {
+        env.storage().temporary().set(&DataKey::In, &sac_in_address);
+        env.storage()
+            .temporary()
+            .set(&DataKey::Out, &sac_out_address);
+    }
 }
 
 #[contractimpl]
@@ -36,7 +53,7 @@ impl CustomAccountInterface for Contract {
         env: Env,
         signature_payload: Hash<32>,
         signature: Signature,
-        auth_contexts: Vec<Context>,
+        _auth_contexts: Vec<Context>,
     ) -> Result<(), Error> {
         let address_bytes = signature.address.clone().to_xdr(&env);
         let address_bytes = address_bytes.slice(address_bytes.len() - 32..);
@@ -49,17 +66,31 @@ impl CustomAccountInterface for Contract {
         env.crypto()
             .ed25519_verify(&public_key, &signature_payload.into(), &signature.signature);
 
-        for context in auth_contexts.iter() {
-            match context {
-                Context::Contract(c) => {
-                    let sac: Address = c.args.get(0).unwrap().try_into_val(&env).unwrap();
-                    let token = token::TokenClient::new(&env, &sac);
+        let sac_in_client = token::TokenClient::new(
+            &env,
+            &env.storage()
+                .temporary()
+                .get::<DataKey, Address>(&DataKey::In)
+                .unwrap_or_else(|| panic_with_error!(&env, Error::TooBadSoSad)),
+        );
+        let sac_out_client = token::TokenClient::new(
+            &env,
+            &env.storage()
+                .temporary()
+                .get::<DataKey, Address>(&DataKey::Out)
+                .unwrap_or_else(|| panic_with_error!(&env, Error::TooBadSoSad)),
+        );
 
-                    token.transfer(&signature.address, &c.contract, &10_000_000);
-                }
-                _ => {}
-            }
-        }
+        sac_in_client.transfer(
+            &signature.address,
+            &env.current_contract_address(),
+            &10_000_000,
+        );
+        sac_out_client.transfer(
+            &env.current_contract_address(),
+            &signature.address,
+            &10_000_000,
+        );
 
         Ok(())
     }
