@@ -33,27 +33,19 @@ if (typeof window !== 'undefined') {
 export const networks = {
   testnet: {
     networkPassphrase: "Test SDF Network ; September 2015",
-    contractId: "CD6VH55NHALNPUS42TRXILJF26TZ4DAC42TKFJQVRXN7XG27X5EJCRKK",
+    contractId: "CBPHWYDHDNEM3B6CR3ZNBD4TRERGH2TTORW4GOVRGKVYWMR3GKSQOZIS",
   }
 } as const
 
-
-export interface Signature {
-  address: string;
-  signature: Buffer;
-}
-
-export type DataKey = {tag: "In", values: void} | {tag: "Out", values: void};
-
 export const Errors = {
-  1: {message:"TooBadSoSad"}
+
 }
 
 export interface Client {
   /**
-   * Construct and simulate a setup transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+   * Construct and simulate a call transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
    */
-  setup: ({sac_in_address, sac_out_address}: {sac_in_address: string, sac_out_address: string}, options?: {
+  call: ({puzzle_address}: {puzzle_address: string}, options?: {
     /**
      * The fee to pay for the transaction. Default: BASE_FEE
      */
@@ -74,15 +66,11 @@ export interface Client {
 export class Client extends ContractClient {
   constructor(public readonly options: ContractClientOptions) {
     super(
-      new ContractSpec([ "AAAAAQAAAAAAAAAAAAAACVNpZ25hdHVyZQAAAAAAAAIAAAAAAAAAB2FkZHJlc3MAAAAAEwAAAAAAAAAJc2lnbmF0dXJlAAAAAAAD7gAAAEA=",
-        "AAAAAgAAAAAAAAAAAAAAB0RhdGFLZXkAAAAAAgAAAAAAAAAAAAAAAkluAAAAAAAAAAAAAAAAAANPdXQA",
-        "AAAABAAAAAAAAAAAAAAABUVycm9yAAAAAAAAAQAAAAAAAAALVG9vQmFkU29TYWQAAAAAAQ==",
-        "AAAAAAAAAAAAAAAFc2V0dXAAAAAAAAACAAAAAAAAAA5zYWNfaW5fYWRkcmVzcwAAAAAAEwAAAAAAAAAPc2FjX291dF9hZGRyZXNzAAAAABMAAAAA",
-        "AAAAAAAAAAAAAAAMX19jaGVja19hdXRoAAAAAwAAAAAAAAARc2lnbmF0dXJlX3BheWxvYWQAAAAAAAPuAAAAIAAAAAAAAAAJc2lnbmF0dXJlAAAAAAAH0AAAAAlTaWduYXR1cmUAAAAAAAAAAAAADl9hdXRoX2NvbnRleHRzAAAAAAPqAAAH0AAAAAdDb250ZXh0AAAAAAEAAAPpAAAD7QAAAAAAAAAD" ]),
+      new ContractSpec([ "AAAAAAAAAAAAAAAEY2FsbAAAAAEAAAAAAAAADnB1enpsZV9hZGRyZXNzAAAAAAATAAAAAA==" ]),
       options
     )
   }
   public readonly fromJSON = {
-    setup: this.txFromJSON<null>
+    call: this.txFromJSON<null>
   }
 }

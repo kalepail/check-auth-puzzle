@@ -6,7 +6,7 @@ use soroban_sdk::{
     crypto::Hash,
     panic_with_error, token,
     xdr::ToXdr,
-    Address, BytesN, Env, TryIntoVal, Vec,
+    Address, BytesN, Env, Vec,
 };
 
 #[contract]
