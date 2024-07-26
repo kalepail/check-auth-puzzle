@@ -4,7 +4,7 @@ import { Client as PuzzleClient, networks as puzzle_networks } from 'puzzle-sdk'
 import { Client as SolverClient, networks as solver_networks } from 'solver-sdk'
 
 // Issuer
-// PUZZLE:CDGOXJBEKI3MQDB3J477NN3HAQBDCNK5YYB2ZKAG24US53RXW44QIF6Z
+// PUZZLE:GCUY5ECTBWZ5JGLXPPKSK4Y34RIMN2AEO4UNGQRRBF6AVVDSXSWLJLEN
 // const issuer = Keypair.fromSecret('SB37H2EPZ4IK3JVLZPMMO3MYTFQ4UUXFZTS7VEHUOQJ4WVHCVMFOYRHB'); // GCUY5ECTBWZ5JGLXPPKSK4Y34RIMN2AEO4UNGQRRBF6AVVDSXSWLJLEN
 
 // console.log([
